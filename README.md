@@ -11,8 +11,8 @@ This software was written by team members of ER-Force at
 Robotics Erlangen e.V., Germany.
 
 The ssl-logtools can record and playback the messages of SSL-Vision
-(https://code.google.com/p/ssl-vision/) and the SSL-RefBox
-(https://github.com/Hawk777/ssl-refbox).
+(https://github.com/RoboCup-SSL/ssl-vision) and the SSL-RefBox
+(https://github.com/RoboCup-SSL/ssl-refbox).
 
 Compiling:
 ------------
@@ -104,4 +104,4 @@ Source:
 ------------
 
 The latest version of this software can be obtained at
-https://github.com/michael-bleier/ssl-logtools.
+https://github.com/RoboCup-SSL/ssl-logtools.
