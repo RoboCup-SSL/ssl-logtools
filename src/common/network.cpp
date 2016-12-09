@@ -13,6 +13,8 @@
 #include "network.h"
 #include "timer.h"
 
+#include <iostream>
+
 /*!
  * \class Network
  * \brief UDP multicast receiver and transmitter
@@ -57,8 +59,21 @@ void Network::connect()
 
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
-    m_socket->bind(m_port, QUdpSocket::ShareAddress  | QUdpSocket::ReuseAddressHint);
-    m_socket->joinMulticastGroup(m_groupAddress);
+
+    //m_socket->bind(m_port, QUdpSocket::ShareAddress  | QUdpSocket::ReuseAddressHint);
+
+    if(!m_socket->bind(m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
+        std::cerr << "Unable to bind UDP socket on port " << m_port << ". "
+             << m_socket->errorString().toStdString() << '.' << endl;
+    }
+
+    //m_socket->joinMulticastGroup(m_groupAddress);
+
+    if(!m_socket->joinMulticastGroup(m_groupAddress)) {
+        std::cerr << "Unable to join UDP multicast on "
+             << m_groupAddress.toString().toStdString() << ':' << m_port << ". "
+             << m_socket->errorString().toStdString().c_str() << '.' << endl;
+    }
 
     if (m_socket->state() != QAbstractSocket::BoundState) {
         foreach (const QNetworkInterface& iface, QNetworkInterface::allInterfaces()) {
