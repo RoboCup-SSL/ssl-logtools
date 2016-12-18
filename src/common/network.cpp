@@ -60,14 +60,10 @@ void Network::connect()
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
 
-    //m_socket->bind(m_port, QUdpSocket::ShareAddress  | QUdpSocket::ReuseAddressHint);
-
     if(!m_socket->bind(m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
         std::cerr << "Unable to bind UDP socket on port " << m_port << ". "
              << m_socket->errorString().toStdString() << '.' << endl;
     }
-
-    //m_socket->joinMulticastGroup(m_groupAddress);
 
     if(!m_socket->joinMulticastGroup(m_groupAddress)) {
         std::cerr << "Unable to join UDP multicast on "
