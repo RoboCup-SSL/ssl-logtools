@@ -27,6 +27,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void loadFile(const QString *filename);
+    void setStopped(bool p);
 
 protected:
     void closeEvent(QCloseEvent *e);
@@ -36,9 +38,6 @@ private slots:
     void toggleStopped();
     void seekFrame(int frame);
     void updatePosition(int frame, double time);
-
-private:
-    void setStopped(bool p);
 
 private:
     Ui::MainWindow* m_ui;
