@@ -57,7 +57,7 @@ void Network::connect()
 
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
-    m_socket->bind(m_port, QUdpSocket::ShareAddress  | QUdpSocket::ReuseAddressHint);
+    m_socket->bind(0, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     m_socket->joinMulticastGroup(m_groupAddress);
 
     if (m_socket->state() != QAbstractSocket::BoundState) {
