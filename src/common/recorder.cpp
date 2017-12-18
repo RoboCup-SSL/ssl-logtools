@@ -49,7 +49,7 @@ bool Recorder::start(const QString& filename, bool compress, int formatVersion)
 
     // create referee socket
     Q_ASSERT(m_referee == NULL);
-    m_referee = new Network(QHostAddress("224.5.23.1"), 10003);
+    m_referee = new Network(QHostAddress("224.5.23.1"), 10003, 0);
     m_referee->moveToThread(m_networkThread);
     QObject::connect(m_networkThread, SIGNAL(started()), m_referee, SLOT(connect()));
     QObject::connect(m_networkThread, SIGNAL(finished()), m_referee, SLOT(disconnect()));
@@ -57,7 +57,7 @@ bool Recorder::start(const QString& filename, bool compress, int formatVersion)
 
     // create vision socket
     Q_ASSERT(m_vision == NULL);
-    m_vision = new Network(QHostAddress("224.5.23.2"), 10006);
+    m_vision = new Network(QHostAddress("224.5.23.2"), 10006, 0);
     m_vision->moveToThread(m_networkThread);
     QObject::connect(m_networkThread, SIGNAL(started()), m_vision, SLOT(connect()));
     QObject::connect(m_networkThread, SIGNAL(finished()), m_vision, SLOT(disconnect()));
@@ -65,7 +65,7 @@ bool Recorder::start(const QString& filename, bool compress, int formatVersion)
 
     // create legacy vision socket
     Q_ASSERT(m_legacyVision == NULL);
-    m_legacyVision = new Network(QHostAddress("224.5.23.2"), 10005);
+    m_legacyVision = new Network(QHostAddress("224.5.23.2"), 10005, 0);
     m_legacyVision->moveToThread(m_networkThread);
     QObject::connect(m_networkThread, SIGNAL(started()), m_legacyVision, SLOT(connect()));
     QObject::connect(m_networkThread, SIGNAL(finished()), m_legacyVision, SLOT(disconnect()));
