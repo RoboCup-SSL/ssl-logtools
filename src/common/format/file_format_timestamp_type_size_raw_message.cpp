@@ -31,7 +31,7 @@ void FileFormatTimestampTypeSizeRawMessage::writeHeaderToStream(QDataStream& str
 bool FileFormatTimestampTypeSizeRawMessage::readHeaderFromStream(QDataStream& stream)
 {
     char name[13];
-    name[13] = '\0';
+    name[12] = '\0';
     stream.readRawData(name, sizeof(name) - 1);
 
     qint32 version;

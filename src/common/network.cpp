@@ -35,9 +35,10 @@
  * \param groupAddress Address of the multicast group to listen on
  * \param port Port to listen on
  */
-Network::Network(const QHostAddress &groupAddress, quint16 port) :
+Network::Network(const QHostAddress &groupAddress, quint16 localPort, quint16 targetPort) :
     m_groupAddress(groupAddress),
-    m_port(port),
+    m_localPort(localPort),
+    m_targetPort(targetPort),
     m_socket(NULL)
 {
 }
@@ -60,14 +61,14 @@ void Network::connect()
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
 
-    if(!m_socket->bind(m_port, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
-        std::cerr << "Unable to bind UDP socket on port " << m_port << ". "
+    if(!m_socket->bind(m_localPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint)) {
+        std::cerr << "Unable to bind UDP socket on port " << m_localPort << ". "
              << m_socket->errorString().toStdString() << '.' << endl;
     }
 
     if(!m_socket->joinMulticastGroup(m_groupAddress)) {
         std::cerr << "Unable to join UDP multicast on "
-             << m_groupAddress.toString().toStdString() << ':' << m_port << ". "
+             << m_groupAddress.toString().toStdString() << ':' << m_localPort << ". "
              << m_socket->errorString().toStdString().c_str() << '.' << endl;
     }
 
@@ -105,5 +106,5 @@ void Network::readData()
  */
 void Network::writeData(const QByteArray& data)
 {
-    m_socket->writeDatagram(data, m_groupAddress, m_port);
+    m_socket->writeDatagram(data, m_groupAddress, m_targetPort);
 }
