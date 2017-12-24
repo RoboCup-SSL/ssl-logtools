@@ -23,17 +23,17 @@ Player::Player() :
 {
     // create referee socket
     Q_ASSERT(m_referee == NULL);
-    m_referee = new Network(QHostAddress("224.5.23.1"), 10003);
+    m_referee = new Network(QHostAddress("224.5.23.1"), 0, 10003);
     m_referee->connect();
 
     // create vision socket
     Q_ASSERT(m_vision == NULL);
-    m_vision = new Network(QHostAddress("224.5.23.2"), 10006);
+    m_vision = new Network(QHostAddress("224.5.23.2"), 0, 10006);
     m_vision->connect();
 
     // create legacy vision socket
     Q_ASSERT(m_legacyVision == NULL);
-    m_legacyVision = new Network(QHostAddress("224.5.23.2"), 10005);
+    m_legacyVision = new Network(QHostAddress("224.5.23.2"), 0, 10005);
     m_legacyVision->connect();
 }
 

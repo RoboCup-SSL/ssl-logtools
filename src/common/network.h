@@ -19,7 +19,7 @@ class Network : public QObject
     Q_OBJECT
 
 public:
-    Network(const QHostAddress &groupAddress, quint16 port);
+    Network(const QHostAddress &groupAddress, quint16 localPort, quint16 targetPort);
     ~Network();
 
 signals:
@@ -37,7 +37,8 @@ private slots:
 
 private:
     QHostAddress m_groupAddress;
-    quint16 m_port;
+    quint16 m_localPort;
+    quint16 m_targetPort;
     QUdpSocket *m_socket;
 };
 

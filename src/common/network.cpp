@@ -33,9 +33,10 @@
  * \param groupAddress Address of the multicast group to listen on
  * \param port Port to listen on
  */
-Network::Network(const QHostAddress &groupAddress, quint16 port) :
+Network::Network(const QHostAddress &groupAddress, quint16 localPort, quint16 targetPort) :
     m_groupAddress(groupAddress),
-    m_port(port),
+    m_localPort(localPort),
+    m_targetPort(targetPort),
     m_socket(NULL)
 {
 }
@@ -57,7 +58,7 @@ void Network::connect()
 
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
-    m_socket->bind(m_port, QUdpSocket::ShareAddress  | QUdpSocket::ReuseAddressHint);
+    m_socket->bind(m_localPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
     m_socket->joinMulticastGroup(m_groupAddress);
 
     if (m_socket->state() != QAbstractSocket::BoundState) {
@@ -94,5 +95,5 @@ void Network::readData()
  */
 void Network::writeData(const QByteArray& data)
 {
-    m_socket->writeDatagram(data, m_groupAddress, m_port);
+    m_socket->writeDatagram(data, m_groupAddress, m_targetPort);
 }
