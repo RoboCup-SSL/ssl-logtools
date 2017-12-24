@@ -37,8 +37,8 @@ private slots:
 
 private:
     QHostAddress m_groupAddress;
-    quint16 m_local_port;
-    quint16 m_target_port;
+    quint16 m_localPort;
+    quint16 m_targetPort;
     QUdpSocket *m_socket;
 };
 
