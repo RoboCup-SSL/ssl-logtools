@@ -22,5 +22,12 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
+    if(argc > 1)
+    {
+        QString filename(argv[1]);
+        window.loadFile(&filename);
+        window.setStopped(false);
+    }
+
     return app.exec();
 }

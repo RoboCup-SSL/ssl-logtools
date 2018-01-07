@@ -69,24 +69,29 @@ void MainWindow::openFile()
     QString filename = QFileDialog::getOpenFileName(this, "Select log file", "", "Log files (*.log *.log.gz)");
 
     if (!filename.isEmpty()) {
-        m_currentFrame = 0;
+        loadFile(&filename);
+    }
+}
 
-        int maxFrame;
-        double duration;
+void MainWindow::loadFile(const QString *filename)
+{
+    m_currentFrame = 0;
 
-        if (m_player.load(filename, maxFrame, duration)) {
-            m_ui->horizontalSlider->setValue(0);
-            m_ui->horizontalSlider->setMaximum(maxFrame);
+    int maxFrame;
+    double duration;
 
-            m_ui->lblPacketMax->setText(QString::number(maxFrame));
-            m_ui->lblTimeMax->setText(QString("%1:%2.%3")
-                .arg((int) (duration / 1E9) / 60)
-                .arg((int) (duration / 1E9) % 60, 2, 10, QChar('0'))
-                .arg((int) (duration / 1E6) % 1000, 3, 10, QChar('0')));
+    if (m_player.load(*filename, maxFrame, duration)) {
+        m_ui->horizontalSlider->setValue(0);
+        m_ui->horizontalSlider->setMaximum(maxFrame);
 
-            QFileInfo fileInfo(filename);
-            m_statusLabel->setText(fileInfo.fileName());
-        }
+        m_ui->lblPacketMax->setText(QString::number(maxFrame));
+        m_ui->lblTimeMax->setText(QString("%1:%2.%3")
+                                          .arg((int) (duration / 1E9) / 60)
+                                          .arg((int) (duration / 1E9) % 60, 2, 10, QChar('0'))
+                                          .arg((int) (duration / 1E6) % 1000, 3, 10, QChar('0')));
+
+        QFileInfo fileInfo(*filename);
+        m_statusLabel->setText(fileInfo.fileName());
     }
 }
 
