@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(m_ui->actionOpen, SIGNAL(triggered()), SLOT(openFile()));
     connect(m_ui->btnPlay, SIGNAL(clicked()), SLOT(toggleStopped()));
     connect(m_ui->actionPlay, SIGNAL(triggered()), SLOT(toggleStopped()));
-    connect(m_ui->horizontalSlider, SIGNAL(valueChanged(int)), SLOT(seekFrame(int)));
+    connect(m_ui->horizontalSlider, SIGNAL(sliderReleased()), SLOT(userSliderChange()));
 
     m_statusLabel = new QLabel;
     statusBar()->addPermanentWidget(m_statusLabel);
@@ -93,6 +93,12 @@ void MainWindow::loadFile(const QString *filename)
         QFileInfo fileInfo(*filename);
         m_statusLabel->setText(fileInfo.fileName());
     }
+}
+
+void MainWindow::userSliderChange()
+{
+    int value = m_ui->horizontalSlider->value();
+    seekFrame(value);
 }
 
 void MainWindow::seekFrame(int frame)
