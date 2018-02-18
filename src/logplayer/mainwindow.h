@@ -36,6 +36,7 @@ protected:
 private slots:
     void openFile();
     void toggleStopped();
+    void userSliderChange();
     void seekFrame(int frame);
     void updatePosition(int frame, double time);
 

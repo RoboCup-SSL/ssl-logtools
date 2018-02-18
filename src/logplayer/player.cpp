@@ -85,6 +85,7 @@ bool Player::load(const QString& filename, int& maxFrame, double& duration) {
 
     maxFrame = packets.size() - 1;
     duration = packets.last()->time - packets.first()->time;
+    return true;
 }
 
 bool Player::start(int position)
