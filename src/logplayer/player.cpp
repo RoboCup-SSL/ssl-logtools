@@ -136,7 +136,7 @@ void Player::sendMessage(const Frame* packet)
     } else if (packet->type == MESSAGE_SSL_VISION_2014) {
         m_vision->writeData(packet->data);
     } else {
-        std::cout << "Error unsupported message type found in log file!" << endl;
+        std::cout << "Error unsupported message type found in log file!" << std::endl;
     }
 }
 
