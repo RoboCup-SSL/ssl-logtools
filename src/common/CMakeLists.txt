@@ -1,7 +1,3 @@
-set(QT_DONT_USE_QTGUI true)
-set(QT_USE_QTNETWORK true)
-include(${QT_USE_FILE})
-
 include_directories(${PROTOBUF_INCLUDE_DIR})
 
 set(SOURCES
@@ -30,7 +26,8 @@ set(MOC_SOURCES
 qt4_wrap_cpp(MOC_SOURCES ${MOC_SOURCES})
 
 add_library(common ${SOURCES} ${MOC_SOURCES})
-target_link_libraries(common protobuf qt ${QT_LIBRARIES})
+target_link_libraries(common protobuf qt ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY})
+include_directories(${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR} ${QT_QTNETWORK_INCLUDE_DIR})
 
 if(WIN32)
     target_link_libraries(core wsock32)
