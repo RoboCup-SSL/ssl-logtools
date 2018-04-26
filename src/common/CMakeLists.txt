@@ -26,8 +26,13 @@ set(MOC_SOURCES
 qt4_wrap_cpp(MOC_SOURCES ${MOC_SOURCES})
 
 add_library(common ${SOURCES} ${MOC_SOURCES})
-target_link_libraries(common protobuf qt ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY})
-include_directories(${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR} ${QT_QTNETWORK_INCLUDE_DIR})
+target_link_libraries(common protobuf qt)
+if(USE_QT5)
+	target_link_libraries(common Qt5::Core Qt5::Network)
+else()
+	target_link_libraries(common ${QT_QTCORE_LIBRARY} ${QT_QTNETWORK_LIBRARY})
+	include_directories(${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR} ${QT_QTNETWORK_INCLUDE_DIR})
+endif()
 
 if(WIN32)
     target_link_libraries(core wsock32)
