@@ -1,0 +1,20 @@
+sudo: required
+language: cpp
+os: linux
+dist: trusty
+compiler:
+  - gcc
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo ./installDeps.sh
+
+env:
+  - CMAKE_ARGS=""
+  - CMAKE_ARGS="-DUSE_QT5=True"
+
+script:
+  - mkdir -p build
+  - cd build
+  - cmake $CMAKE_ARGS ..
+  - make
