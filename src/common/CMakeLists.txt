@@ -35,5 +35,5 @@ else()
 endif()
 
 if(WIN32)
-    target_link_libraries(core wsock32)
+    target_link_libraries(common wsock32)
 endif()

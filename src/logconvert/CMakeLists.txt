@@ -1,3 +1,4 @@
+include_directories(${PROTOBUF_INCLUDE_DIR})
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(SOURCES

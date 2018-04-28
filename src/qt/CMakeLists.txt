@@ -21,5 +21,5 @@ else()
 endif()
 
 if(WIN32)
-    target_link_libraries(core wsock32)
+    target_link_libraries(qt wsock32)
 endif()
