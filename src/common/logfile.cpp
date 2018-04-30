@@ -156,6 +156,8 @@ void LogFile::saveMessage(const QByteArray& data, qint64 time, MessageType type)
     }
 
     QDataStream stream(m_io);
+    stream.setVersion(QDataStream::Qt_4_6);
+
     format->writeMessageToStream(stream, data, time, type);
 }
 
@@ -174,6 +176,7 @@ bool LogFile::readMessage(QByteArray& data, qint64& time, MessageType& type)
     }
 
     QDataStream stream(m_io);
+    stream.setVersion(QDataStream::Qt_4_6);
 
     if (stream.atEnd()) {
         return false;
