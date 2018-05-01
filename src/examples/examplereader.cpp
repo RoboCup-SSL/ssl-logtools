@@ -1,5 +1,5 @@
 #include "protobuf/ssl_referee.pb.h"
-#include "protobuf/ssl_wrapper.pb.h"
+#include "protobuf/messages_robocup_ssl_wrapper.pb.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>

@@ -13,3 +13,4 @@ protobuf_generate_cpp(PROTO_SOURCES PROTO_HEADERS ${PROTO_FILES})
 
 add_library(protobuf ${PROTO_SOURCES} ${PROTO_HEADERS} ${PROTO_FILES})
 target_link_libraries(protobuf ${PROTOBUF_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+

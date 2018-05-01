@@ -12,6 +12,7 @@
 #include "qt/multicastsocket.h"
 #include "network.h"
 #include "timer.h"
+#include <QtGlobal>
 
 /*!
  * \class Network
@@ -58,7 +59,11 @@ void Network::connect()
 
     m_socket = new MulticastSocket(this);
     QObject::connect(m_socket, SIGNAL(readyRead()), SLOT(readData()));
-    m_socket->bind(m_localPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+#if QT_VERSION >= 0x050000
+    m_socket->bind(QHostAddress::AnyIPv4, m_localPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+#else
+    m_socket->bind(QHostAddress::Any, m_localPort, QUdpSocket::ShareAddress | QUdpSocket::ReuseAddressHint);
+#endif
     m_socket->joinMulticastGroup(m_groupAddress);
 
     if (m_socket->state() != QAbstractSocket::BoundState) {
