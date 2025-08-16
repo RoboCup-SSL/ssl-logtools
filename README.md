@@ -20,20 +20,28 @@ Compiling:
 All programs should compile on GNU/Linux, Windows and Mac OS X.
 
 In order to build the ssl-logtools you will need:
-  * cmake-2.8.2
-  * g++-4.1
-  * qt-gui-4.6.0
-  * boost-program-options-1.42.0
-  * zlib-1.2.7
-  * protobuf-2.0.0
+  * cmake
+  * g++
+  * qt6-base-dev
+  * libboost-program-options-dev
+  * zlib1g-dev
+  * protobuf-compiler
+  * ninja-build
+  * libopengl-dev
+  * libglu1-mesa-dev
+
+On a Debian-based system, you can install the dependencies with the following command:
+```bash
+sudo apt-get install -y cmake g++ qt6-base-dev libboost-program-options-dev zlib1g-dev protobuf-compiler ninja-build libopengl-dev libglu1-mesa-dev
+```
 
 The recommended way of building a project with CMake is by doing an
 out-of-source build. This can be done like this:
 
 > mkdir build <br>
 > cd build <br>
-> cmake .. <br>
-> make <br>
+> cmake -G Ninja .. <br>
+> ninja <br>
 
 Binaries will be created in the subdirectory "bin" of the "build" folder.
 

@@ -10,6 +10,8 @@
  ***************************************************************************/
 
 #include "file_format_legacy.h"
+#include <QString>
+#include <QByteArray>
 
 FileFormatLegacy::FileFormatLegacy() :
     FileFormat(0)

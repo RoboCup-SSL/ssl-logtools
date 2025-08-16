@@ -10,6 +10,8 @@
  ***************************************************************************/
 
 #include "file_format_timestamp_type_size_raw_message.h"
+#include <QString>
+#include <QByteArray>
 
 FileFormatTimestampTypeSizeRawMessage::FileFormatTimestampTypeSizeRawMessage() :
     FileFormat(1)

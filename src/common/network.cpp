@@ -13,6 +13,8 @@
 #include "network.h"
 #include "timer.h"
 #include <QtGlobal>
+#include <QVariant>
+#include <QNetworkInterface>
 
 /*!
  * \class Network
