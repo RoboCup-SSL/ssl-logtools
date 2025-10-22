@@ -16,10 +16,9 @@
 #include <iostream>
 #include <QFileInfo>
 
-Player::Player() :
-    m_referee(NULL),
-    m_vision(NULL),
-    m_legacyVision(NULL)
+Player::Player() : m_referee(NULL),
+                   m_vision(NULL),
+                   m_legacyVision(NULL)
 {
     // create referee socket
     Q_ASSERT(m_referee == NULL);
@@ -54,28 +53,33 @@ Player::~Player()
     packets.clear();
 }
 
-bool Player::load(const QString& filename, int& maxFrame, double& duration) {
+bool Player::load(const QString &filename, int &maxFrame, double &duration)
+{
     QFileInfo fileInfo(filename);
 
     bool compressed = false;
 
-    if (fileInfo.suffix() == "gz") {
+    if (fileInfo.suffix() == "gz")
+    {
         compressed = true;
     }
 
     LogFile file(filename, compressed);
 
-    if (!file.openRead()) {
+    if (!file.openRead())
+    {
         return false;
     }
 
     qDeleteAll(packets);
     packets.clear();
 
-    for (;;) {
-        Frame* packet = new Frame;
+    for (;;)
+    {
+        Frame *packet = new Frame;
 
-        if (!file.readMessage(packet->data, packet->time, packet->type)) {
+        if (!file.readMessage(packet->data, packet->time, packet->type))
+        {
             delete packet;
             break;
         }
@@ -89,8 +93,9 @@ bool Player::load(const QString& filename, int& maxFrame, double& duration) {
 }
 
 bool Player::start(int position)
-{  
-    if (position > packets.size() - 1) {
+{
+    if (position > packets.size() - 1)
+    {
         return false;
     }
 
@@ -113,30 +118,60 @@ bool Player::good()
     return packets.size() > 0;
 }
 
-void Player::sendMessage(const Frame* packet)
+void Player::sendMessage(const Frame *packet)
 {
     RoboCup2014Legacy::Wrapper::SSL_WrapperPacket legacyVisionPacket;
     SSL_Referee refereePacket;
 
-    if (packet->type == MESSAGE_BLANK) {
+    if (packet->type == MESSAGE_BLANK)
+    {
         // ignore
-    } else if (packet->type == MESSAGE_UNKNOWN) {
+    }
+    else if (packet->type == MESSAGE_UNKNOWN)
+    {
         // OK, let's try to figure this out by parsing the message
-        if (refereePacket.ParseFromArray(packet->data.data(), packet->data.size())) {
+        if (refereePacket.ParseFromArray(packet->data.data(), packet->data.size()))
+        {
             m_referee->writeData(packet->data);
-        } else if (legacyVisionPacket.ParseFromArray(packet->data.data(), packet->data.size())) {
+        }
+        else if (legacyVisionPacket.ParseFromArray(packet->data.data(), packet->data.size()))
+        {
             m_legacyVision->writeData(packet->data);
-        } else {
+        }
+        else
+        {
             std::cout << "Error unsupported or corrupt packet found in log file!" << std::endl;
         }
-    } else if (packet->type == MESSAGE_SSL_VISION_2010) {
+    }
+    else if (packet->type == MESSAGE_SSL_VISION_2010)
+    {
         m_legacyVision->writeData(packet->data);
-    } else if (packet->type == MESSAGE_SSL_REFBOX_2013) {
+    }
+    else if (packet->type == MESSAGE_SSL_REFBOX_2013)
+    {
         m_referee->writeData(packet->data);
-    } else if (packet->type == MESSAGE_SSL_VISION_2014) {
+    }
+    else if (packet->type == MESSAGE_SSL_VISION_2014)
+    {
         m_vision->writeData(packet->data);
-    } else {
-        std::cout << "Error unsupported message type found in log file!" << std::endl;
+    }
+    else if (packet->type == MESSAGE_SSL_VISION_TRACKER_2020)
+    {
+        if (receive_VT)
+        {
+        std::cout << "MESSAGE_SSL_VISION_TRACKER_2020 Received" << std::endl;    
+        receive_VT=false;
+        }
+    }
+else if (packet->type == MESSAGE_SSL_INDEX_2021)
+    {
+        std::cout << "MESSAGE_SSL_INDEX_2021 Received" << std::endl;
+    }
+
+    else
+    {
+        std::cout << packet->type <<std::endl;
+        std::cout << "Warning unsupported message type found in log file!" << std::endl;
     }
 }
 
@@ -147,12 +182,14 @@ void Player::run()
     const qint64 startTime = Timer::systemTime();
     const qint64 referenceTime = packets.at(m_currentFrame)->time;
 
-    while (m_mayRun && ++m_currentFrame < packets.size() && this->isRunning()) {
-        Frame* packet = packets.at(m_currentFrame);
+    while (m_mayRun && ++m_currentFrame < packets.size() && this->isRunning())
+    {
+        Frame *packet = packets.at(m_currentFrame);
 
         qint64 sleepTime = ((packet->time - referenceTime) - (Timer::systemTime() - startTime)) / 1000;
 
-        if (sleepTime > 0) {
+        if (sleepTime > 0)
+        {
             QThread::currentThread()->usleep(sleepTime);
         }
 

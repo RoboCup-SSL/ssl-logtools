@@ -8,11 +8,11 @@ compiler:
 before_install:
   - sudo apt-get update -qq
   - sudo ./installDeps.sh
-  - 'if [ "$CMAKE_ARGS" = "-DUSE_QT5=True" ]; then sudo apt-get install -qq qtbase5-dev; fi'
+  - 'if [ "$CMAKE_ARGS" = "-DUSE_Qt6=True" ]; then sudo apt-get install -qq qtbase5-dev; fi'
 
 env:
   - CMAKE_ARGS=""
-  - CMAKE_ARGS="-DUSE_QT5=True"
+  - CMAKE_ARGS="-DUSE_Qt6=True"
 
 script:
   - mkdir -p build

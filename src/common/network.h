@@ -12,7 +12,9 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <QUdpSocket>
+#include <QtNetwork/QUdpSocket> // 修正: Qt6用のインクルードパス
+#include <QtCore/QObject>       // 修正: QObjectのインクルードを追加
+#include <QVariant>
 
 class Network : public QObject
 {

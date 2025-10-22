@@ -7,8 +7,8 @@ set(SOURCES
 
 add_executable(logconvert ${SOURCES})
 target_link_libraries(logconvert common ${Boost_LIBRARIES})
-if(USE_QT5)
-	target_link_libraries(logconvert Qt5::Core)
+if(USE_Qt6)
+	target_link_libraries(logconvert Qt6::Core)
 else()
 	target_link_libraries(logconvert ${QT_QTCORE_LIBRARY})
 	include_directories(${QT_INCLUDE_DIR} ${QT_QTCORE_INCLUDE_DIR})

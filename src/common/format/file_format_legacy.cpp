@@ -8,7 +8,9 @@
  *   You can find it here: http://www.gnu.org/licenses/gpl.html            *
  *                                                                         *
  ***************************************************************************/
-
+#include <QString>
+#include <QByteArray>
+#include <zlib.h>
 #include "file_format_legacy.h"
 
 FileFormatLegacy::FileFormatLegacy() :
@@ -43,10 +45,43 @@ bool FileFormatLegacy::readHeaderFromStream(QDataStream& stream)
     return false;
 }
 
+
+// zlib圧縮関数
+QByteArray zlibCompress(const QByteArray& data)
+{
+    uLongf destLen = compressBound(data.size());
+    QByteArray compressed;
+    compressed.resize(destLen);
+    int res = compress(reinterpret_cast<Bytef*>(compressed.data()), &destLen,
+                      reinterpret_cast<const Bytef*>(data.constData()), data.size());
+    if (res != Z_OK) {
+        return QByteArray();
+    }
+    compressed.resize(destLen);
+    return compressed;
+}
+
 void FileFormatLegacy::writeMessageToStream(QDataStream& stream, const QByteArray& data, qint64 time, MessageType type)
 {
     stream << time;
-    stream << qCompress(data);
+    stream << zlibCompress(data);
+}
+
+
+// zlib解凍関数
+QByteArray zlibUncompress(const QByteArray& compressed)
+{
+    // 仮の最大サイズ（必要に応じて調整）
+    uLongf destLen = compressed.size() * 10;
+    QByteArray uncompressed;
+    uncompressed.resize(destLen);
+    int res = uncompress(reinterpret_cast<Bytef*>(uncompressed.data()), &destLen,
+                        reinterpret_cast<const Bytef*>(compressed.constData()), compressed.size());
+    if (res != Z_OK) {
+        return QByteArray();
+    }
+    uncompressed.resize(destLen);
+    return uncompressed;
 }
 
 bool FileFormatLegacy::readMessageFromStream(QDataStream& stream, QByteArray& data, qint64& time, MessageType& type)
@@ -56,7 +91,7 @@ bool FileFormatLegacy::readMessageFromStream(QDataStream& stream, QByteArray& da
     stream >> time;
     QByteArray compressedPacket;
     stream >> compressedPacket;
-    data = qUncompress(compressedPacket);
+    data = zlibUncompress(compressedPacket);
 
     return true;
 }

@@ -10,6 +10,9 @@
  ***************************************************************************/
 
 #include "file_format_timestamp_type_size_raw_message.h"
+#include <QtCore/QDataStream> // 修正: QDataStreamのインクルードを追加
+#include <QtCore/QString>     // 修正: QStringのインクルードを追加
+#include <QtCore/QByteArray>  // 修正: QByteArrayのインクルードを追加
 
 FileFormatTimestampTypeSizeRawMessage::FileFormatTimestampTypeSizeRawMessage() :
     FileFormat(1)
